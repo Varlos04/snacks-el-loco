@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🌶️ Snacks El Loco
 
-## Getting Started
+Sistema de gestión digital para **Snacks El Loco**, un negocio de snacks preparados con chamoy y Miguelito (Boings, Smoothies, Vacas Locas, Arizona, Cueritos, entre otras cosas). Opera los fines de semana en un solo puesto.
 
-First, run the development server:
+Proyecto real es construido para digitalizar el menú y los pedidos del negocio.
+
+## 📌 Estado del proyecto
+
+🚧 En construcción — MVP en desarrollo.
+
+## 🗺️ Roadmap
+
+- [ ] Fase 0 — Preparación del proyecto y repositorio
+- [ ] Fase 1 — Base de datos en Supabase
+- [ ] Fase 2 — Menú web interactivo
+- [ ] Fase 3 — Carrito de compras
+- [ ] Fase 4 — Pedido por WhatsApp
+- [ ] Fase 5 — Panel / POS básico
+- [ ] Fase 6 — Calculadora de costos
+- [ ] Fase 7 — Control de inventario
+- [ ] Fase 8 — Pulido final y despliegue
+
+## 🛠️ Tecnologías
+
+| Capa | Tecnología |
+|---|---|
+| Frontend | Next.js (React) + Tailwind CSS |
+| Backend / BD | Supabase (Postgres + Auth) |
+| Pedidos | Enlaces de WhatsApp (wa.me) |
+| Despliegue | Vercel |
+
+## 💻 Cómo ejecutar el proyecto localmente
 
 ```bash
+git clone https://github.com/Varlos04/snacks-el-loco.git
+cd snacks-el-loco
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 💰 Moneda
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Todos los precios y cálculos se manejan en **pesos mexicanos (MXN)**.
 
-## Learn More
+## ✍️ Autor
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Proyecto desarrollado por Varlos04 como parte de su portafolio de desarrollo de software.
