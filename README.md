@@ -34,25 +34,6 @@ Proyecto real construido para digitalizar el menú, los pedidos y la administrac
 | Pedidos        | Enlaces de WhatsApp (wa.me)   |
 | Despliegue     | Vercel                        |
 
-## 📂 Estructura del proyecto
-snacks-el-loco/
-├── src/
-│ ├── app/
-│ │ ├── page.js # Menú público
-│ │ ├── admin/
-│ │ │ ├── page.js # Panel: gestión de productos
-│ │ │ ├── login/page.js # Login
-│ │ │ ├── ingredientes/page.js # CRUD de ingredientes
-│ │ │ ├── recetas/page.js # Recetas y cálculo de costos
-│ │ │ └── venta/page.js # Registrar venta + descuento de inventario
-│ ├── components/
-│ │ ├── Menu.js # Carrito y agrupamiento por categoría
-│ │ └── TarjetaProducto.js
-│ └── lib/
-│ └── supabaseClient.js
-├── docs/
-│ └── modelo-datos.md # Diseño de las tablas
-└── README.md
 ## 🗄️ Modelo de datos
 
 5 tablas relacionales en Postgres: `productos`, `ingredientes`, `recetas` (relación muchos-a-muchos entre productos e ingredientes con cantidad), `pedidos` y `detalle_pedido`. Documentación completa en [`docs/modelo-datos.md`](./docs/modelo-datos.md).
