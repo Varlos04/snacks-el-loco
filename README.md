@@ -1,49 +1,37 @@
 # 🌶️ Snacks El Loco
 
-Sistema de gestión digital para **Snacks El Loco**, un negocio de snacks preparados con chamoy y Miguelito (Boings, Smoothies, Vacas Locas, Arizona, Cueritos, entre otras cosas). Opera los fines de semana en un solo puesto.
+Sistema de gestión digital para **Snacks El Loco**, un negocio de snacks preparados con chamoy y Miguelito (Boings, Smoothies, Vacas Locas, Arizona, Cueritos, entre otras cosas). 
 
-Proyecto real es construido para digitalizar el menú y los pedidos del negocio.
+Proyecto real construido para digitalizar el menú, los pedidos y la administración del negocio.
+
+## 🔗 Demo en vivo
+
+**[snacks-el-loco.vercel.app](https://snacks-el-loco.vercel.app)**
+
+> El panel de administración (`/admin/login`) es privado y requiere credenciales — no está enlazado desde el menú público a propósito.
 
 ## 📌 Estado del proyecto
 
-🚧 En construcción — MVP en desarrollo.
+✅ MVP completo y desplegado en producción.
 
-## 🗺️ Roadmap
+## ✨ Funcionalidades
 
-- [ ] Fase 0 — Preparación del proyecto y repositorio
-- [ ] Fase 1 — Base de datos en Supabase
-- [ ] Fase 2 — Menú web interactivo
-- [ ] Fase 3 — Carrito de compras
-- [ ] Fase 4 — Pedido por WhatsApp
-- [ ] Fase 5 — Panel / POS básico
-- [ ] Fase 6 — Calculadora de costos
-- [ ] Fase 7 — Control de inventario
-- [ ] Fase 8 — Pulido final y despliegue
+- **Menú público interactivo** con identidad visual propia, agrupado por categoría
+- **Carrito de compras** con cálculo de total en tiempo real
+- **Pedido directo por WhatsApp** — el cliente arma su pedido y le llega al negocio ya escrito
+- **Panel de administración protegido** (login con Supabase Auth)
+  - CRUD completo de productos (crear, editar precio, activar/desactivar, eliminar)
+  - Gestión de ingredientes con costo unitario y stock
+  - **Calculadora de costos y márgenes** por receta (ingredientes → producto)
+  - **Registro de ventas** con descuento automático de inventario según receta
 
 ## 🛠️ Tecnologías
 
-| Capa | Tecnología |
-|---|---|
-| Frontend | Next.js (React) + Tailwind CSS |
-| Backend / BD | Supabase (Postgres + Auth) |
-| Pedidos | Enlaces de WhatsApp (wa.me) |
-| Despliegue | Vercel |
+| Capa           | Tecnología                    |
+|----------------|--------------------------------|
+| Frontend       | Next.js 16 (App Router), React, Tailwind CSS |
+| Backend / BD   | Supabase (Postgres + Auth + RLS) |
+| Pedidos        | Enlaces de WhatsApp (wa.me)   |
+| Despliegue     | Vercel                        |
 
-## 💻 Cómo ejecutar el proyecto localmente
-
-```bash
-git clone https://github.com/Varlos04/snacks-el-loco.git
-cd snacks-el-loco
-npm install
-npm run dev
-```
-
-Abre `http://localhost:3000`.
-
-## 💰 Moneda
-
-Todos los precios y cálculos se manejan en **pesos mexicanos (MXN)**.
-
-## ✍️ Autor
-
-Proyecto desarrollado por Varlos04 como parte de su portafolio de desarrollo de software.
+## 📂 Estructura del proyecto
