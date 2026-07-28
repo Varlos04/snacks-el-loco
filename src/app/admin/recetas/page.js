@@ -12,6 +12,8 @@ export default function Recetas() {
   const [productoSeleccionado, setProductoSeleccionado] = useState('');
   const [ingredienteSeleccionado, setIngredienteSeleccionado] = useState('');
   const [cantidad, setCantidad] = useState('');
+  const [editandoId, setEditandoId] = useState(null);
+  const [cantidadTemp, setCantidadTemp] = useState('');
   const router = useRouter();
 
   async function verificarSesionYCargarDatos() {
@@ -67,6 +69,34 @@ export default function Recetas() {
     }
   }
 
+  function iniciarEdicionCantidad(item) {
+    setEditandoId(item.id);
+    setCantidadTemp(item.cantidad_necesaria);
+  }
+
+  function cancelarEdicionCantidad() {
+    setEditandoId(null);
+    setCantidadTemp('');
+  }
+
+  async function guardarCantidad(id) {
+    const nuevaCantidad = parseFloat(cantidadTemp);
+
+    const { error } = await supabase
+      .from('recetas')
+      .update({ cantidad_necesaria: nuevaCantidad })
+      .eq('id', id);
+
+    if (!error) {
+      setRecetas((prev) =>
+        prev.map((r) =>
+          r.id === id ? { ...r, cantidad_necesaria: nuevaCantidad } : r
+        )
+      );
+    }
+    setEditandoId(null);
+  }
+
   function calcularCosto(productoId) {
     const items = recetas.filter((r) => r.producto_id === productoId);
     return items.reduce((total, item) => {
@@ -99,7 +129,10 @@ export default function Recetas() {
         </label>
         <select
           value={productoSeleccionado}
-          onChange={(e) => setProductoSeleccionado(e.target.value)}
+          onChange={(e) => {
+            setProductoSeleccionado(e.target.value);
+            cancelarEdicionCantidad();
+          }}
           className="bg-loco-card text-loco-texto border border-loco-turquesa/30 rounded-lg px-3 py-2 text-sm w-full max-w-xs"
         >
           <option value="">-- Elige un producto --</option>
@@ -155,20 +188,61 @@ export default function Recetas() {
           <div className="flex flex-col gap-2 mb-4">
             {recetasDelProducto.map((item) => {
               const ing = ingredientes.find((i) => i.id === item.ingrediente_id);
+              const enEdicion = editandoId === item.id;
+
               return (
                 <div
                   key={item.id}
-                  className="bg-loco-card rounded-lg p-3 flex items-center justify-between"
+                  className="bg-loco-card rounded-lg p-3 flex items-center justify-between flex-wrap gap-2"
                 >
-                  <span className="text-loco-texto text-sm">
-                    {ing?.nombre}: {item.cantidad_necesaria} {ing?.unidad}
-                  </span>
-                  <button
-                    onClick={() => eliminarDeReceta(item.id)}
-                    className="text-loco-chile text-xs"
-                  >
-                    quitar
-                  </button>
+                  {enEdicion ? (
+                    <>
+                      <span className="text-loco-texto text-sm">{ing?.nombre}:</span>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={cantidadTemp}
+                          onChange={(e) => setCantidadTemp(e.target.value)}
+                          className="w-20 bg-loco-bg text-loco-texto border border-loco-turquesa rounded-lg px-2 py-1 text-sm"
+                          autoFocus
+                        />
+                        <span className="text-loco-texto-suave text-xs">{ing?.unidad}</span>
+                        <button
+                          onClick={() => guardarCantidad(item.id)}
+                          className="bg-loco-turquesa text-loco-bg text-xs font-bold px-3 py-1 rounded-full"
+                        >
+                          Guardar
+                        </button>
+                        <button
+                          onClick={cancelarEdicionCantidad}
+                          className="text-loco-texto-suave text-xs"
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-loco-texto text-sm">
+                        {ing?.nombre}: {item.cantidad_necesaria} {ing?.unidad}
+                      </span>
+                      <div className="flex items-center gap-3">
+                        <button
+                          onClick={() => iniciarEdicionCantidad(item)}
+                          className="text-loco-rosa text-xs font-bold"
+                        >
+                          Editar
+                        </button>
+                        <button
+                          onClick={() => eliminarDeReceta(item.id)}
+                          className="text-loco-chile text-xs"
+                        >
+                          quitar
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               );
             })}
