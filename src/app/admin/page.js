@@ -155,6 +155,12 @@ export default function Admin() {
 
         <nav className="flex flex-wrap gap-3">
           <a
+            href="/admin/corte-caja"
+            className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
+>
+  Corte de caja
+</a>
+          <a
             href="/admin/historial"
             className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
 >
