@@ -14,6 +14,7 @@
   --color-loco-chile: #c1272d;
   --color-loco-texto: #f5ede0;
   --color-loco-texto-suave: #a89b8a;
+  --color-loco-lime: #7C9A3A;
 }
 
 @media (prefers-color-scheme: dark) {

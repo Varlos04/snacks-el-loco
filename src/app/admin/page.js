@@ -155,6 +155,18 @@ export default function Admin() {
 
         <nav className="flex flex-wrap gap-3">
           <a
+            href="/admin/historial"
+            className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
+>
+  Historial
+</a>
+          <a
+            href="/admin/rentabilidad"
+  className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
+>
+  Rentabilidad
+</a>
+          <a
             href="/admin/ingredientes"
             className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
           >
