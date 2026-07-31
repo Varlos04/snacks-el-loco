@@ -1,42 +1,82 @@
-# 🌶️ Snacks El Loco
+# 🌶️ Snacks El Loco — Panel de Gestión
 
-Sistema de gestión digital para **Snacks El Loco**, un negocio de snacks preparados con chamoy y Miguelito (Boings, Smoothies, Vacas Locas, Arizona, Cueritos, entre otras cosas). 
+Sistema de gestión para **Snacks El Loco**, un negocio de snacks preparados con chamoy y Miguelito (Boings, Smoothies, Vacas Locas, Arizona y Cueritos). Opera los fines de semana en un solo puesto.
 
-Proyecto real construido para digitalizar el menú, los pedidos y la administración del negocio.
+Proyecto real construido para digitalizar la administración del negocio de mi papá — costos, inventario, ventas y rentabilidad — y como parte de mi portafolio de desarrollo full-stack.
 
 ## 🔗 Demo en vivo
 
 **[snacks-el-loco.vercel.app](https://snacks-el-loco.vercel.app)**
 
-> El panel de administración (`/admin/login`) es privado y requiere credenciales — no está enlazado desde el menú público a propósito.
+> Es una herramienta interna, no un sitio para clientes: la URL raíz redirige directo al login del panel. El acceso es privado.
 
 ## 📌 Estado del proyecto
 
-✅ MVP completo y desplegado en producción.
+✅ Completo y en uso real por el negocio.
 
 ## ✨ Funcionalidades
 
-- **Menú público interactivo** con identidad visual propia, agrupado por categoría
-- **Carrito de compras** con cálculo de total en tiempo real
-- **Pedido directo por WhatsApp** — el cliente arma su pedido y le llega al negocio ya escrito
-- **Panel de administración protegido** (login con Supabase Auth)
-  - CRUD completo de productos (crear, editar precio, activar/desactivar, eliminar)
-  - Gestión de ingredientes con costo unitario y stock
-  - **Calculadora de costos y márgenes** por receta (ingredientes → producto)
-  - **Registro de ventas** con descuento automático de inventario según receta
+**Catálogo y costos**
+- CRUD completo de productos (crear, editar precio, activar/desactivar, eliminar)
+- Ingredientes con costo unitario, unidad de medida y stock
+- Recetas: relación producto-ingrediente con cantidades editables
+- **Calculadora de rentabilidad** con semáforo (buena ganancia / margen bajo / alarma) según umbrales propios del negocio
+
+**Operación diaria**
+- Registro de ventas con carrito rápido, pensado para usarse en el puesto
+- **Descuento automático de inventario** según la receta de cada producto vendido
+- Protección contra doble registro accidental de una misma venta
+
+**Análisis del negocio**
+- Historial de ventas agrupado por día, con detalle expandible por pedido
+- Corte de caja: total del día, número de ventas, ticket promedio y ranking de productos más vendidos
+- Gastos generales (gas, renta del puesto, transporte) para ver la ganancia real, no solo el margen por producto
+- Lista de compras sugerida según nivel de stock
+- Gráfica de tendencia de ventas por fin de semana
+
+**Seguridad y acceso**
+- Autenticación con Supabase Auth
+- Todas las rutas del panel protegidas — sin sesión, redirige al login
+- Row Level Security granular por tabla y operación en Postgres
+- Reinicio de datos transaccionales con confirmación por texto, sin afectar catálogo ni recetas
 
 ## 🛠️ Tecnologías
 
-| Capa           | Tecnología                    |
-|----------------|--------------------------------|
-| Frontend       | Next.js 16 (App Router), React, Tailwind CSS |
-| Backend / BD   | Supabase (Postgres + Auth + RLS) |
-| Pedidos        | Enlaces de WhatsApp (wa.me)   |
-| Despliegue     | Vercel                        |
+| Capa            | Tecnología                              |
+|-----------------|-------------------------------------------|
+| Frontend        | Next.js 16 (App Router), React, Tailwind CSS |
+| Backend / BD    | Supabase (Postgres + Auth + RLS)         |
+| Gráficas        | Recharts                                  |
+| Iconos          | Lucide React                              |
+| Despliegue      | Vercel                                    |
 
+## 📂 Estructura del proyecto
+snacks-el-loco/
+├── src/
+│ ├── app/
+│ │ ├── page.js # Redirige a /admin/login
+│ │ ├── admin/
+│ │ │ ├── layout.js # Sidebar y navegación compartida
+│ │ │ ├── login/page.js
+│ │ │ ├── page.js # Gestión de productos
+│ │ │ ├── ingredientes/page.js
+│ │ │ ├── recetas/page.js # Recetas + cálculo de costos
+│ │ │ ├── rentabilidad/page.js # Semáforo de márgenes
+│ │ │ ├── venta/page.js # Registrar venta + descuento de inventario
+│ │ │ ├── historial/page.js
+│ │ │ ├── corte-caja/page.js
+│ │ │ ├── gastos/page.js
+│ │ │ ├── lista-compras/page.js
+│ │ │ ├── tendencia/page.js # Gráfica de ventas semanales
+│ │ │ └── configuracion/page.js # Reinicio de datos
+│ └── lib/
+│ └── supabaseClient.js
+├── docs/
+│ └── modelo-datos.md
+└── README.md
 ## 🗄️ Modelo de datos
 
-5 tablas relacionales en Postgres: `productos`, `ingredientes`, `recetas` (relación muchos-a-muchos entre productos e ingredientes con cantidad), `pedidos` y `detalle_pedido`. Documentación completa en [`docs/modelo-datos.md`](./docs/modelo-datos.md).
+6 tablas relacionales en Postgres: `productos`, `ingredientes`, `recetas` (muchos-a-muchos entre productos e ingredientes, con cantidad), `pedidos`, `detalle_pedido` y `gastos`. Documentación completa en [`docs/modelo-datos.md`](./docs/modelo-datos.md).
 
 ## 💻 Cómo ejecutar el proyecto localmente
 
@@ -61,10 +101,12 @@ Todos los precios y cálculos se manejan en **pesos mexicanos (MXN)**.
 
 ## 🎯 Decisiones de diseño
 
-- **Server Components para datos públicos, Client Components para interactividad**: el menú trae productos directo del servidor (`async function Home()`); el carrito y el panel usan `"use client"` con `useState`/`useEffect` donde se necesita estado.
-- **RLS granular por tabla y operación**: lectura pública solo en `productos`; todo lo demás (ingredientes, recetas, pedidos, escritura de productos) requiere autenticación.
+- **Herramienta 100% interna, no orientada a clientes.** El negocio ya coordina pedidos por WhatsApp de forma directa; el valor real estaba en la administración, no en un menú público.
+- **Layout compartido (`layout.js`)** centraliza sidebar, navegación y sesión — cada página se enfoca solo en su lógica, sin duplicar UI.
 - **Costos y márgenes como cálculo derivado**, nunca guardados en la base de datos — siempre se recalculan con los datos más recientes de ingredientes y recetas.
-- **Diseñado para operación real de fin de semana** en un solo punto de venta, sin sobre-ingeniería (sin turnos, sin múltiples cajeros, sin lógica de alta concurrencia).
+- **RLS granular por operación**: cada tabla define explícitamente qué puede hacer un usuario autenticado (leer, crear, editar, borrar) — sin permisos genéricos.
+- **Diseñado para operación real de fin de semana** en un solo punto de venta: sin turnos, sin múltiples cajeros, sin lógica de alta concurrencia.
+- **Acciones destructivas con fricción intencional**: el reinicio de datos exige escribir una palabra de confirmación, no solo un clic, para evitar pérdidas accidentales.
 
 ## ✍️ Autor
 
