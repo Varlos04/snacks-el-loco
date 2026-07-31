@@ -3,11 +3,18 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from 'recharts';
 
-const UMBRAL_STOCK_BAJO = 10;
-
-export default function ListaDeCompras() {
-  const [ingredientes, setIngredientes] = useState([]);
+export default function TendenciaSemanal() {
+  const [pedidos, setPedidos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const router = useRouter();
 
@@ -20,12 +27,12 @@ export default function ListaDeCompras() {
     }
 
     const { data, error } = await supabase
-      .from('ingredientes')
+      .from('pedidos')
       .select('*')
-      .order('stock_actual', { ascending: true });
+      .order('fecha', { ascending: true });
 
     if (!error) {
-      setIngredientes(data);
+      setPedidos(data);
     }
     setCargando(false);
   }
@@ -36,80 +43,97 @@ export default function ListaDeCompras() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const porComprar = ingredientes.filter(
-    (ing) => ing.stock_actual < UMBRAL_STOCK_BAJO
-  );
-  const enBuenNivel = ingredientes.filter(
-    (ing) => ing.stock_actual >= UMBRAL_STOCK_BAJO
-  );
+  function claveDelFinDeSemana(fechaISO) {
+    const fecha = new Date(fechaISO);
+    const diaSemana = fecha.getDay();
+
+    if (diaSemana === 0) {
+      fecha.setDate(fecha.getDate() - 1);
+    }
+
+    return fecha.toISOString().slice(0, 10);
+  }
+
+  function formatearEtiqueta(claveSabado) {
+    const fecha = new Date(claveSabado + 'T00:00:00');
+    return fecha.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+  }
+
+  const semanas = {};
+  pedidos.forEach((pedido) => {
+    const clave = claveDelFinDeSemana(pedido.fecha);
+    if (!semanas[clave]) {
+      semanas[clave] = 0;
+    }
+    semanas[clave] += pedido.total;
+  });
+
+  const datosGrafica = Object.entries(semanas)
+    .map(([clave, total]) => ({
+      semana: formatearEtiqueta(clave),
+      total: Number(total.toFixed(2)),
+    }))
+    .sort((a, b) => (a.semana > b.semana ? 1 : -1));
+
+  const totalGeneral = datosGrafica.reduce((suma, d) => suma + d.total, 0);
+  const promedioSemanal = datosGrafica.length
+    ? totalGeneral / datosGrafica.length
+    : 0;
 
   if (cargando) {
-    return <p className="text-loco-texto p-8">Cargando lista de compras...</p>;
+    return <p className="text-loco-texto">Cargando tendencia...</p>;
   }
 
   return (
-    <main className="min-h-screen bg-loco-bg px-6 py-10">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-loco-turquesa font-extrabold text-3xl">
-          Lista de compras
-        </h1>
-        <a href="/admin" className="text-loco-texto-suave text-sm underline">
-          ← Volver al panel
-        </a>
-      </div>
+    <>
+      <h2 className="text-loco-rosa font-bold text-xl mb-4">Tendencia semanal</h2>
 
-      <p className="text-loco-texto-suave text-sm mb-6 max-w-2xl">
-        Ingredientes con menos de {UMBRAL_STOCK_BAJO} unidades en stock — es
-        buena idea comprarlos antes del próximo fin de semana.
-      </p>
-
-      {porComprar.length === 0 ? (
-        <p className="text-loco-lime text-sm mb-8">
-          Todo tu inventario está en buen nivel. No hay nada urgente que comprar.
+      {datosGrafica.length === 0 ? (
+        <p className="text-loco-texto-suave text-sm">
+          Todavía no hay suficientes ventas registradas para mostrar una tendencia.
         </p>
       ) : (
-        <div className="flex flex-col gap-2 mb-10">
-          {porComprar.map((ing) => (
-            <div
-              key={ing.id}
-              className="bg-loco-card border-l-4 border-loco-chile rounded-xl p-4 flex items-center justify-between"
-            >
-              <div>
-                <p className="text-loco-texto font-bold">{ing.nombre}</p>
-                <p className="text-loco-texto-suave text-sm">
-                  ${ing.costo_unitario} MXN / {ing.unidad}
-                </p>
-              </div>
-              {ing.stock_actual < 0 ? (
-  <span className="bg-loco-chile text-white font-bold text-sm px-3 py-1 rounded-full">
-    ⚠ Sin stock (falta surtir)
-  </span>
-) : (
-  <span className="bg-loco-chile text-white font-bold text-sm px-3 py-1 rounded-full">
-    Quedan {ing.stock_actual} {ing.unidad}
-  </span>
-)}
+        <>
+          <div className="grid grid-cols-2 gap-3 mb-8 max-w-md">
+            <div className="bg-loco-card border border-loco-turquesa/30 rounded-xl p-4 text-center">
+              <p className="text-loco-turquesa font-extrabold text-2xl">
+                ${totalGeneral.toFixed(2)}
+              </p>
+              <p className="text-loco-texto-suave text-xs mt-1">Total acumulado</p>
             </div>
-          ))}
-        </div>
-      )}
-
-      <h2 className="text-loco-texto-suave font-bold text-sm mb-3 uppercase tracking-wide">
-        En buen nivel
-      </h2>
-      <div className="flex flex-col gap-2 opacity-60">
-        {enBuenNivel.map((ing) => (
-          <div
-            key={ing.id}
-            className="bg-loco-card rounded-xl p-4 flex items-center justify-between"
-          >
-            <p className="text-loco-texto text-sm">{ing.nombre}</p>
-            <span className="text-loco-texto-suave text-sm">
-              {ing.stock_actual} {ing.unidad}
-            </span>
+            <div className="bg-loco-card border border-loco-turquesa/30 rounded-xl p-4 text-center">
+              <p className="text-loco-turquesa font-extrabold text-2xl">
+                ${promedioSemanal.toFixed(2)}
+              </p>
+              <p className="text-loco-texto-suave text-xs mt-1">Promedio por fin de semana</p>
+            </div>
           </div>
-        ))}
-      </div>
-    </main>
+
+          <div className="bg-loco-card rounded-xl p-4" style={{ height: 360 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={datosGrafica} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#3a2c20" />
+                <XAxis
+                  dataKey="semana"
+                  stroke="#a89b8a"
+                  fontSize={12}
+                />
+                <YAxis stroke="#a89b8a" fontSize={12} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#241c16',
+                    border: '1px solid #4dd4d4',
+                    borderRadius: 8,
+                    color: '#f5ede0',
+                  }}
+                  formatter={(value) => [`$${value} MXN`, 'Total']}
+                />
+                <Bar dataKey="total" fill="#4dd4d4" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </>
+      )}
+    </>
   );
 }

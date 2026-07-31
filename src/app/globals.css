@@ -6,15 +6,18 @@
 }
 
 @theme {
-  --color-loco-bg: #1a1410;
-  --color-loco-card: #241c16;
-  --color-loco-turquesa: #4dd4d4;
-  --color-loco-rosa: #f0578f;
-  --color-loco-amarillo: #f4c430;
-  --color-loco-chile: #c1272d;
+  --color-loco-bg: #15100c;
+  --color-loco-bg-elevada: #1c1510;
+  --color-loco-card: #241b14;
+  --color-loco-card-hover: #2c2118;
+  --color-loco-borde: #3a2c20;
+  --color-loco-turquesa: #3ec6c6;
+  --color-loco-rosa: #e8497a;
+  --color-loco-amarillo: #f0b429;
+  --color-loco-chile: #d1373d;
+  --color-loco-lime: #7fae3f;
   --color-loco-texto: #f5ede0;
   --color-loco-texto-suave: #a89b8a;
-  --color-loco-lime: #7C9A3A;
 }
 
 @media (prefers-color-scheme: dark) {

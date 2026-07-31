@@ -30,7 +30,6 @@ export default function CorteDeCaja() {
     if (resDetalles.data) setDetalles(resDetalles.data);
     if (resProductos.data) setProductos(resProductos.data);
 
-    // Por defecto, selecciona el día más reciente que tenga ventas
     if (resPedidos.data && resPedidos.data.length > 0) {
       setFechaSeleccionada(resPedidos.data[0].fecha.slice(0, 10));
     }
@@ -49,7 +48,6 @@ export default function CorteDeCaja() {
     return p ? p.nombre : 'Producto eliminado';
   }
 
-  // Días disponibles para elegir en el selector, sin repetidos
   const diasDisponibles = [
     ...new Set(pedidos.map((p) => p.fecha.slice(0, 10))),
   ].sort((a, b) => (a < b ? 1 : -1));
@@ -64,7 +62,6 @@ export default function CorteDeCaja() {
   const numeroDeVentas = pedidosDelDia.length;
   const ticketPromedio = numeroDeVentas > 0 ? totalDelDia / numeroDeVentas : 0;
 
-  // Ranking de productos más vendidos ese día (por cantidad de piezas)
   const conteoPorProducto = {};
   detallesDelDia.forEach((d) => {
     if (!conteoPorProducto[d.producto_id]) {
@@ -94,19 +91,12 @@ export default function CorteDeCaja() {
   }
 
   if (cargando) {
-    return <p className="text-loco-texto p-8">Cargando corte de caja...</p>;
+    return <p className="text-loco-texto">Cargando corte de caja...</p>;
   }
 
   return (
-    <main className="min-h-screen bg-loco-bg px-6 py-10">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-loco-turquesa font-extrabold text-3xl">
-          Corte de caja
-        </h1>
-        <a href="/admin" className="text-loco-texto-suave text-sm underline">
-          ← Volver al panel
-        </a>
-      </div>
+    <>
+      <h2 className="text-loco-rosa font-bold text-xl mb-4">Corte de caja</h2>
 
       {diasDisponibles.length === 0 ? (
         <p className="text-loco-texto-suave text-sm">
@@ -152,9 +142,9 @@ export default function CorteDeCaja() {
             </div>
           </div>
 
-          <h2 className="text-loco-rosa font-bold text-xl mb-4">
+          <h3 className="text-loco-texto font-bold text-lg mb-4">
             Productos más vendidos ese día
-          </h2>
+          </h3>
 
           {ranking.length === 0 ? (
             <p className="text-loco-texto-suave text-sm">
@@ -187,6 +177,6 @@ export default function CorteDeCaja() {
           )}
         </>
       )}
-    </main>
+    </>
   );
 }

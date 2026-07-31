@@ -43,14 +43,11 @@ export default function TendenciaSemanal() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // El negocio opera sábado y domingo, así que agrupamos ambos días
-  // bajo la fecha del sábado de ese fin de semana.
   function claveDelFinDeSemana(fechaISO) {
     const fecha = new Date(fechaISO);
-    const diaSemana = fecha.getDay(); // 0 = domingo, 6 = sábado
+    const diaSemana = fecha.getDay();
 
     if (diaSemana === 0) {
-      // Es domingo: retrocede un día para agruparlo con su sábado
       fecha.setDate(fecha.getDate() - 1);
     }
 
@@ -62,7 +59,6 @@ export default function TendenciaSemanal() {
     return fecha.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
   }
 
-  // Agrupamos el total vendido por fin de semana
   const semanas = {};
   pedidos.forEach((pedido) => {
     const clave = claveDelFinDeSemana(pedido.fecha);
@@ -85,19 +81,12 @@ export default function TendenciaSemanal() {
     : 0;
 
   if (cargando) {
-    return <p className="text-loco-texto p-8">Cargando tendencia...</p>;
+    return <p className="text-loco-texto">Cargando tendencia...</p>;
   }
 
   return (
-    <main className="min-h-screen bg-loco-bg px-6 py-10">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-loco-turquesa font-extrabold text-3xl">
-          Tendencia semanal
-        </h1>
-        <a href="/admin" className="text-loco-texto-suave text-sm underline">
-          ← Volver al panel
-        </a>
-      </div>
+    <>
+      <h2 className="text-loco-rosa font-bold text-xl mb-4">Tendencia semanal</h2>
 
       {datosGrafica.length === 0 ? (
         <p className="text-loco-texto-suave text-sm">
@@ -145,6 +134,6 @@ export default function TendenciaSemanal() {
           </div>
         </>
       )}
-    </main>
+    </>
   );
 }

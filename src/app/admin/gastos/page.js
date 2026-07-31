@@ -29,7 +29,6 @@ export default function Gastos() {
       setGastos(data);
     }
 
-    // Por defecto, la fecha de hoy en formato YYYY-MM-DD
     const hoy = new Date().toISOString().slice(0, 10);
     setFecha(hoy);
 
@@ -83,19 +82,12 @@ export default function Gastos() {
   const totalGastos = gastos.reduce((suma, g) => suma + g.monto, 0);
 
   if (cargando) {
-    return <p className="text-loco-texto p-8">Cargando gastos...</p>;
+    return <p className="text-loco-texto">Cargando gastos...</p>;
   }
 
   return (
-    <main className="min-h-screen bg-loco-bg px-6 py-10">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-loco-turquesa font-extrabold text-3xl">
-          Gastos generales
-        </h1>
-        <a href="/admin" className="text-loco-texto-suave text-sm underline">
-          ← Volver al panel
-        </a>
-      </div>
+    <>
+      <h2 className="text-loco-rosa font-bold text-xl mb-4">Gastos generales</h2>
 
       <p className="text-loco-texto-suave text-sm mb-6 max-w-2xl">
         Aquí van los gastos que no son ingredientes de receta: gas, renta del
@@ -184,6 +176,6 @@ export default function Gastos() {
           </p>
         )}
       </div>
-    </main>
+    </>
   );
 }

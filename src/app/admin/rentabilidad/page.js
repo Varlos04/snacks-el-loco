@@ -80,7 +80,6 @@ export default function Rentabilidad() {
     };
   }
 
-  // Construimos la lista con todos los cálculos ya resueltos, lista para pintar y para ordenar
   const analisis = productos
     .filter((p) => p.activo)
     .map((producto) => {
@@ -94,7 +93,7 @@ export default function Rentabilidad() {
 
       return { producto, costo, margen, margenPorcentaje, estado, sinReceta };
     })
-    .sort((a, b) => a.margenPorcentaje - b.margenPorcentaje); // peores casos primero
+    .sort((a, b) => a.margenPorcentaje - b.margenPorcentaje);
 
   const conAlarma = analisis.filter(
     (a) => !a.sinReceta && a.margenPorcentaje < 30
@@ -108,19 +107,12 @@ export default function Rentabilidad() {
   const sinRecetaCount = analisis.filter((a) => a.sinReceta).length;
 
   if (cargando) {
-    return <p className="text-loco-texto p-8">Cargando análisis...</p>;
+    return <p className="text-loco-texto">Cargando análisis...</p>;
   }
 
   return (
-    <main className="min-h-screen bg-loco-bg px-6 py-10">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-loco-turquesa font-extrabold text-3xl">
-          Rentabilidad
-        </h1>
-        <a href="/admin" className="text-loco-texto-suave text-sm underline">
-          ← Volver al panel
-        </a>
-      </div>
+    <>
+      <h2 className="text-loco-rosa font-bold text-xl mb-4">Rentabilidad</h2>
 
       <p className="text-loco-texto-suave text-sm mb-6 max-w-2xl">
         Con 50% de margen o más el producto va bien (verde). Entre 30% y 49% hay
@@ -128,7 +120,6 @@ export default function Rentabilidad() {
         el producto esté dejando muy poco, o incluso perdiendo dinero.
       </p>
 
-      {/* Resumen rápido */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         <div className="bg-loco-card border border-loco-chile rounded-xl p-4 text-center">
           <p className="text-loco-chile font-extrabold text-2xl">{conAlarma.length}</p>
@@ -148,7 +139,6 @@ export default function Rentabilidad() {
         </div>
       </div>
 
-      {/* Lista detallada, peor caso primero */}
       <div className="flex flex-col gap-3">
         {analisis.map(({ producto, costo, margen, margenPorcentaje, estado, sinReceta }) => (
           <div
@@ -190,6 +180,6 @@ export default function Rentabilidad() {
           </div>
         ))}
       </div>
-    </main>
+    </>
   );
 }

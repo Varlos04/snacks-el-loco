@@ -68,7 +68,6 @@ export default function RegistrarVenta() {
   async function confirmarVenta() {
     if (carrito.length === 0) return;
 
-    // Bloqueo extra: si ya hay una venta en proceso, ignora clics adicionales
     if (procesandoRef.current) return;
     procesandoRef.current = true;
 
@@ -142,19 +141,14 @@ export default function RegistrarVenta() {
   }
 
   if (cargando) {
-    return <p className="text-loco-texto p-8">Cargando...</p>;
+    return <p className="text-loco-texto">Cargando...</p>;
   }
 
   return (
-    <main className="min-h-screen bg-loco-bg px-6 py-10 pb-40">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-loco-turquesa font-extrabold text-3xl">Registrar venta</h1>
-        <a href="/admin" className="text-loco-texto-suave text-sm underline">
-          ← Volver al panel
-        </a>
-      </div>
+    <>
+      <h2 className="text-loco-rosa font-bold text-xl mb-4">Registrar venta</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pb-40">
         {productos.map((producto) => (
           <button
             key={producto.id}
@@ -215,6 +209,6 @@ export default function RegistrarVenta() {
           </div>
         </div>
       )}
-    </main>
+    </>
   );
 }

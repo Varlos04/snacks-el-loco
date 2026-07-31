@@ -129,88 +129,12 @@ export default function Admin() {
     }
   }
 
-  async function cerrarSesion() {
-    await supabase.auth.signOut();
-    router.push('/admin/login');
-  }
-
   if (cargando) {
-    return <p className="text-loco-texto p-8">Cargando panel...</p>;
+    return <p className="text-loco-texto">Cargando panel...</p>;
   }
 
   return (
-    <main className="min-h-screen bg-loco-bg px-6 py-10">
-      <div className="flex flex-col gap-5 mb-8">
-        <div className="flex items-center justify-between">
-          <h1 className="text-loco-turquesa font-extrabold text-3xl">
-            Panel — Snacks El Loco
-          </h1>
-          <button
-            onClick={cerrarSesion}
-            className="text-loco-chile text-sm border border-loco-chile rounded-full px-4 py-1.5 hover:bg-loco-chile hover:text-white transition"
-          >
-            Cerrar sesión
-          </button>
-        </div>
-
-        <nav className="flex flex-wrap gap-3">
-          <a
-            href="/admin/tendencia"
-  className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
->
-  Tendencia
-</a>
-          <a
-            href="/admin/lista-compras"
-  className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
->
-  Lista de compras
-</a>
-          <a
-          href="/admin/gastos"
-  className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
->
-  Gastos
-</a>
-          <a
-            href="/admin/corte-caja"
-            className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
->
-  Corte de caja
-</a>
-          <a
-            href="/admin/historial"
-            className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
->
-  Historial
-</a>
-          <a
-            href="/admin/rentabilidad"
-  className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
->
-  Rentabilidad
-</a>
-          <a
-            href="/admin/ingredientes"
-            className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
-          >
-            Ingredientes
-          </a>
-          <a
-            href="/admin/recetas"
-            className="bg-loco-card text-loco-texto text-sm font-bold px-4 py-2 rounded-full border border-loco-turquesa/30 hover:border-loco-turquesa transition"
-          >
-            Recetas y costos
-          </a>
-          <a
-            href="/admin/venta"
-            className="bg-loco-rosa text-white text-sm font-bold px-4 py-2 rounded-full hover:opacity-90 transition"
-          >
-            Registrar venta
-          </a>
-        </nav>
-      </div>
-
+    <>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-loco-rosa font-bold text-xl">Productos</h2>
         <button
@@ -338,6 +262,6 @@ export default function Admin() {
           </div>
         ))}
       </div>
-    </main>
+    </>
   );
 }

@@ -49,7 +49,6 @@ export default function Historial() {
     return detalles.filter((d) => d.pedido_id === pedidoId);
   }
 
-  // Clave de agrupación: solo la fecha (sin hora), en formato YYYY-MM-DD
   function claveDelDia(fechaISO) {
     return fechaISO.slice(0, 10);
   }
@@ -69,7 +68,6 @@ export default function Historial() {
     return fecha.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
   }
 
-  // Agrupamos los pedidos por día
   const dias = {};
   pedidos.forEach((pedido) => {
     const clave = claveDelDia(pedido.fecha);
@@ -91,19 +89,12 @@ export default function Historial() {
   }
 
   if (cargando) {
-    return <p className="text-loco-texto p-8">Cargando historial...</p>;
+    return <p className="text-loco-texto">Cargando historial...</p>;
   }
 
   return (
-    <main className="min-h-screen bg-loco-bg px-6 py-10">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-loco-turquesa font-extrabold text-3xl">
-          Historial de ventas
-        </h1>
-        <a href="/admin" className="text-loco-texto-suave text-sm underline">
-          ← Volver al panel
-        </a>
-      </div>
+    <>
+      <h2 className="text-loco-rosa font-bold text-xl mb-4">Historial de ventas</h2>
 
       {clavesOrdenadas.length === 0 && (
         <p className="text-loco-texto-suave text-sm">
@@ -188,6 +179,6 @@ export default function Historial() {
           );
         })}
       </div>
-    </main>
+    </>
   );
 }

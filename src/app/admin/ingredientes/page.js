@@ -52,7 +52,9 @@ export default function Ingredientes() {
       .select();
 
     if (!error && data) {
-      setIngredientes((prev) => [...prev, data[0]].sort((a, b) => a.nombre.localeCompare(b.nombre)));
+      setIngredientes((prev) =>
+        [...prev, data[0]].sort((a, b) => a.nombre.localeCompare(b.nombre))
+      );
       setNombre('');
       setCostoUnitario('');
       setUnidad('');
@@ -69,19 +71,12 @@ export default function Ingredientes() {
   }
 
   if (cargando) {
-    return <p className="text-loco-texto p-8">Cargando ingredientes...</p>;
+    return <p className="text-loco-texto">Cargando ingredientes...</p>;
   }
 
   return (
-    <main className="min-h-screen bg-loco-bg px-6 py-10">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-loco-turquesa font-extrabold text-3xl">
-          Ingredientes
-        </h1>
-        <a href="/admin" className="text-loco-texto-suave text-sm underline">
-          ← Volver al panel
-        </a>
-      </div>
+    <>
+      <h2 className="text-loco-rosa font-bold text-xl mb-4">Ingredientes</h2>
 
       <form
         onSubmit={agregarIngrediente}
@@ -147,13 +142,15 @@ export default function Ingredientes() {
             <div>
               <p className="text-loco-texto font-bold">{ing.nombre}</p>
               <p className="text-loco-texto-suave text-sm flex items-center gap-2">
-  <span>${ing.costo_unitario} MXN / {ing.unidad} · Stock: {ing.stock_actual}</span>
-  {ing.stock_actual < 10 && (
-    <span className="bg-loco-chile text-white text-xs font-bold px-2 py-0.5 rounded-full">
-      Stock bajo
-    </span>
-  )}
-</p>
+                <span>
+                  ${ing.costo_unitario} MXN / {ing.unidad} · Stock: {ing.stock_actual}
+                </span>
+                {ing.stock_actual < 10 && (
+                  <span className="bg-loco-chile text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                    Stock bajo
+                  </span>
+                )}
+              </p>
             </div>
             <button
               onClick={() => eliminarIngrediente(ing.id)}
@@ -169,6 +166,6 @@ export default function Ingredientes() {
           </p>
         )}
       </div>
-    </main>
+    </>
   );
 }

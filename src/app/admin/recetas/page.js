@@ -107,7 +107,7 @@ export default function Recetas() {
   }
 
   if (cargando) {
-    return <p className="text-loco-texto p-8">Cargando recetas...</p>;
+    return <p className="text-loco-texto">Cargando recetas...</p>;
   }
 
   const recetasDelProducto = recetas.filter(
@@ -115,13 +115,8 @@ export default function Recetas() {
   );
 
   return (
-    <main className="min-h-screen bg-loco-bg px-6 py-10">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-loco-turquesa font-extrabold text-3xl">Recetas y costos</h1>
-        <a href="/admin" className="text-loco-texto-suave text-sm underline">
-          ← Volver al panel
-        </a>
-      </div>
+    <>
+      <h2 className="text-loco-rosa font-bold text-xl mb-4">Recetas y costos</h2>
 
       <div className="mb-6">
         <label className="text-loco-texto-suave text-xs block mb-1">
@@ -290,6 +285,6 @@ export default function Recetas() {
           </div>
         </>
       )}
-    </main>
+    </>
   );
 }
