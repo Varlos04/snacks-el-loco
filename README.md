@@ -50,31 +50,6 @@ Proyecto real construido para digitalizar la administración del negocio de mi p
 | Iconos          | Lucide React                              |
 | Despliegue      | Vercel                                    |
 
-## 📂 Estructura del proyecto
-snacks-el-loco/
-├── src/
-│ ├── app/
-│ │ ├── page.js # Redirige a /admin/login
-│ │ ├── admin/
-│ │ │ ├── layout.js # Sidebar y navegación compartida
-│ │ │ ├── login/page.js
-│ │ │ ├── page.js # Gestión de productos
-│ │ │ ├── ingredientes/page.js
-│ │ │ ├── recetas/page.js # Recetas + cálculo de costos
-│ │ │ ├── rentabilidad/page.js # Semáforo de márgenes
-│ │ │ ├── venta/page.js # Registrar venta + descuento de inventario
-│ │ │ ├── historial/page.js
-│ │ │ ├── corte-caja/page.js
-│ │ │ ├── gastos/page.js
-│ │ │ ├── lista-compras/page.js
-│ │ │ ├── tendencia/page.js # Gráfica de ventas semanales
-│ │ │ └── configuracion/page.js # Reinicio de datos
-│ └── lib/
-│ └── supabaseClient.js
-├── docs/
-│ └── modelo-datos.md
-└── README.md
-## 🗄️ Modelo de datos
 
 6 tablas relacionales en Postgres: `productos`, `ingredientes`, `recetas` (muchos-a-muchos entre productos e ingredientes, con cantidad), `pedidos`, `detalle_pedido` y `gastos`. Documentación completa en [`docs/modelo-datos.md`](./docs/modelo-datos.md).
 
